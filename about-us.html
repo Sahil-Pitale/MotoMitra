@@ -32,7 +32,68 @@
 <body class="bg-black text-gray-300">
 
     <!-- NAVBAR -->
+    <!-- RESPONSIVE NAVBAR -->
     <nav class="bg-black text-white py-4 sticky top-0 z-50 shadow-xl">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+
+            <!-- LOGO -->
+            <div class="flex items-center gap-2">
+                <img src="images/logo.png" alt="Logo" width="60">
+                <a href="index.html">
+                    <span class="text-2xl font-black tracking-tighter">
+                        MOTO<span class="text-yellow-400">MITRA</span>
+                    </span>
+                </a>
+            </div>
+
+            <!-- DESKTOP MENU -->
+            <div class="hidden md:flex gap-8 text-sm font-medium">
+                <a href="index.html" class="hover:text-yellow-400 transition">Home</a>
+                <a href="#how-it-works" class="hover:text-yellow-400 transition">How It Works</a>
+                <a href="#pricing" class="hover:text-yellow-400 transition">Pricing</a>
+                <a href="#" class="hover:text-yellow-400 transition">For Sellers</a>
+            </div>
+
+            <!-- DESKTOP SIGN IN -->
+            <button
+                class="hidden md:block bg-yellow-400 text-black px-5 py-2 rounded-full font-bold text-sm hover:bg-yellow-300 transition">
+                Sign-in/Sign-up
+            </button>
+
+            <!-- MOBILE MENU BUTTON -->
+            <button id="menuBtn" class="md:hidden text-yellow-400 text-3xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- MOBILE DROPDOWN -->
+        <div id="mobileMenu" class="hidden bg-black border-t border-gray-800 md:hidden">
+            <div class="flex flex-col px-6 py-4 space-y-4 text-sm">
+
+                <a href="index.html" class="hover:text-yellow-400">Home</a>
+                <a href="#how-it-works" class="hover:text-yellow-400">How It Works</a>
+                <a href="#pricing" class="hover:text-yellow-400">Pricing</a>
+                <a href="#" class="hover:text-yellow-400">For Sellers</a>
+
+                <button
+                    class="bg-yellow-400 text-black px-5 py-2 rounded-full font-bold hover:bg-yellow-300 transition">
+                    Sign-in/Sign-up
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- NAVBAR SCRIPT -->
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+    </script>
+
+    <!-- <nav class="bg-black text-white py-4 sticky top-0 z-50 shadow-xl">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <img src="images/logo.png" alt="Logo" width="60">
@@ -52,7 +113,7 @@
                 Sign-in/Sign-up
             </button>
         </div>
-    </nav>
+    </nav> -->
 
     <!-- HERO ABOUT SECTION -->
     <section class="relative py-24 overflow-hidden">
@@ -227,7 +288,8 @@
                 class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 no-scrollbar">
 
                 <!-- Card 1 -->
-                <div class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
+                <div
+                    class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
                     <img src="https://randomuser.me/api/portraits/men/32.jpg"
                         class="w-32 h-32 rounded-full mx-auto border-4 border-yellow-400 mb-4">
                     <h3 class="text-white text-xl font-bold">Rahul Verma</h3>
@@ -236,7 +298,8 @@
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
+                <div
+                    class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
                     <img src="https://randomuser.me/api/portraits/men/45.jpg"
                         class="w-32 h-32 rounded-full mx-auto border-4 border-yellow-400 mb-4">
                     <h3 class="text-white text-xl font-bold">Amit Joshi</h3>
@@ -245,7 +308,8 @@
                 </div>
 
                 <!-- Card 3 -->
-                <div class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
+                <div
+                    class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
                     <img src="https://randomuser.me/api/portraits/women/44.jpg"
                         class="w-32 h-32 rounded-full mx-auto border-4 border-yellow-400 mb-4">
                     <h3 class="text-white text-xl font-bold">Neha Patel</h3>
@@ -254,7 +318,8 @@
                 </div>
 
                 <!-- Card 4 -->
-                <div class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
+                <div
+                    class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
                     <img src="https://randomuser.me/api/portraits/men/60.jpg"
                         class="w-32 h-32 rounded-full mx-auto border-4 border-yellow-400 mb-4">
                     <h3 class="text-white text-xl font-bold">Vikas Sharma</h3>
@@ -263,7 +328,8 @@
                 </div>
 
                 <!-- Card 5 -->
-                <div class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
+                <div
+                    class="bg-gray-900 min-w-[80%] sm:min-w-[50%] md:min-w-[33.33%] p-8 rounded-2xl shadow-lg snap-center">
                     <img src="https://randomuser.me/api/portraits/women/68.jpg"
                         class="w-32 h-32 rounded-full mx-auto border-4 border-yellow-400 mb-4">
                     <h3 class="text-white text-xl font-bold">Priya Singh</h3>
@@ -271,7 +337,7 @@
                     <p class="text-gray-500 text-sm">Manages customer communication & support.</p>
                 </div>
 
-                    
+
 
             </div>
 
