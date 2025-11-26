@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Add Inspection - MotoMitra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="/images/logo.png" />
+  <style>
+    /* small custom styles */
+    .status-btn[data-active="true"] { outline: 3px solid rgba(250,204,21,0.25); transform: translateY(-2px); }
+    .no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @media print {
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+    }
+  </style>
+</head>
+<body class="bg-black text-gray-200 min-h-screen">
+
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex gap-6 items-start">
+      <!-- LEFT: Form -->
+      <div class="w-full lg:w-2/3 bg-gray-900 p-6 rounded-2xl shadow-lg">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-2xl font-bold text-yellow-400">Add Inspection</h1>
+          <div class="space-x-2 no-print">
+            <button id="saveBtn" class="bg-yellow-400 text-black px-4 py-2 rounded font-semibold">Save (local)</button>
+            <button id="exportBtn" class="bg-gray-800 border border-gray-700 px-4 py-2 rounded">Export JSON</button>
+            <button id="printBtn" class="bg-gray-800 border border-gray-700 px-4 py-2 rounded">Print</button>
+          </div>
+        </div>
+
+        <form id="inspectionForm" class="space-y-6">
+          <!-- Basic Info -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm text-gray-400">Customer / User</label>
+              <input name="user" id="user" class="w-full mt-1 p-3 rounded bg-gray-800" placeholder="Customer name or ID">
+            </div>
+            <div>
+              <label class="text-sm text-gray-400">Bike Model</label>
+              <input name="bike_model" id="bike_model" class="w-full mt-1 p-3 rounded bg-gray-800" placeholder="e.g. Hero Splendor 125">
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm text-gray-400">Inspection Date</label>
+              <input type="date" name="date" id="date" class="w-full mt-1 p-3 rounded bg-gray-800">
+            </div>
+            <div>
+              <label class="text-sm text-gray-400">Inspector</label>
+              <input name="inspector" id="inspector" class="w-full mt-1 p-3 rounded bg-gray-800" placeholder="Inspector name">
+            </div>
+          </div>
+
+          <!-- Section: Suspension System -->
+          <section class="bg-gray-800 p-4 rounded-lg">
+            <h2 class="font-bold text-lg text-yellow-400 mb-3">Suspension System</h2>
+
+            <!-- Front Forks -->
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Front Forks</div>
+                  <div class="text-xs text-gray-400">No oil leakage, smooth rebound, no clunking.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="front_forks" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="front_forks" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                  <button type="button" data-field="front_forks" data-value="Replace" class="status-btn px-3 py-1 rounded bg-red-600">Replace</button>
+                </div>
+              </div>
+              <textarea name="front_forks_notes" id="front_forks_notes" class="w-full mt-3 p-3 rounded bg-gray-900 text-sm" placeholder="Notes for front forks (optional)"></textarea>
+            </div>
+
+            <!-- Rear Shock Absorbers -->
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Rear Shock Absorbers</div>
+                  <div class="text-xs text-gray-400">Stable damping, no bounce-back issue, no seepage.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="rear_shocks" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="rear_shocks" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                  <button type="button" data-field="rear_shocks" data-value="Replace" class="status-btn px-3 py-1 rounded bg-red-600">Replace</button>
+                </div>
+              </div>
+              <textarea name="rear_shocks_notes" id="rear_shocks_notes" class="w-full mt-3 p-3 rounded bg-gray-900 text-sm" placeholder="Notes for rear shocks (optional)"></textarea>
+            </div>
+          </section>
+
+          <!-- Section: Chain & Sprocket -->
+          <section class="bg-gray-800 p-4 rounded-lg">
+            <h2 class="font-bold text-lg text-yellow-400 mb-3">Chain & Sprocket (Chain Kit)</h2>
+
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Chain Condition</div>
+                  <div class="text-xs text-gray-400">No rusting, no tight spots, correct slack.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="chain_condition" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="chain_condition" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                  <button type="button" data-field="chain_condition" data-value="Replace" class="status-btn px-3 py-1 rounded bg-red-600">Replace</button>
+                </div>
+              </div>
+              <textarea name="chain_condition_notes" id="chain_condition_notes" class="w-full mt-3 p-3 rounded bg-gray-900 text-sm" placeholder="Notes for chain (optional)"></textarea>
+            </div>
+
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Sprocket Teeth Wear</div>
+                  <div class="text-xs text-gray-400">Teeth not hooked or sharpened.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="sprocket_wear" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="sprocket_wear" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                  <button type="button" data-field="sprocket_wear" data-value="Replace" class="status-btn px-3 py-1 rounded bg-red-600">Replace</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Chain Lubrication</div>
+                  <div class="text-xs text-gray-400">Adequate lubrication; no dry noise.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="chain_lubrication" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="chain_lubrication" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section: Frame & Structural Check -->
+          <section class="bg-gray-800 p-4 rounded-lg">
+            <h2 class="font-bold text-lg text-yellow-400 mb-3">Frame & Structural Check</h2>
+
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Chassis Condition</div>
+                  <div class="text-xs text-gray-400">No bends, cracks, or signs of accident repair.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="chassis_condition" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="chassis_condition" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Handlebar Alignment</div>
+                  <div class="text-xs text-gray-400">Straight, no pull to either side.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="handlebar_alignment" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="handlebar_alignment" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm font-semibold">Air Filter</div>
+                  <div class="text-xs text-gray-400">Clean, no clogging.</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" data-field="air_filter" data-value="Pass" class="status-btn px-3 py-1 rounded bg-green-600">Pass</button>
+                  <button type="button" data-field="air_filter" data-value="Attention" class="status-btn px-3 py-1 rounded bg-yellow-500">Attention</button>
+                  <button type="button" data-field="air_filter" data-value="Replace" class="status-btn px-3 py-1 rounded bg-red-600">Replace</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Document Section -->
+          <section class="bg-gray-800 p-4 rounded-lg">
+            <h2 class="font-bold text-lg text-yellow-400 mb-3">Documents</h2>
+
+            <div class="mb-3">
+              <label class="block text-sm text-gray-400 mb-1">RC / Registration</label>
+              <select name="doc_rc" id="doc_rc" class="w-full p-3 rounded bg-gray-700">
+                <option value="">-- select status --</option>
+                <option>Pass</option>
+                <option>Attention</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="block text-sm text-gray-400 mb-1">Insurance</label>
+              <select name="doc_insurance" id="doc_insurance" class="w-full p-3 rounded bg-gray-700">
+                <option value="">-- select status --</option>
+                <option>Pass</option>
+                <option>Attention</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="block text-sm text-gray-400 mb-1">Pollution / PUC</label>
+              <select name="doc_puc" id="doc_puc" class="w-full p-3 rounded bg-gray-700">
+                <option value="">-- select status --</option>
+                <option>Pass</option>
+                <option>Attention</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- Final Notes -->
+          <section class="bg-gray-800 p-4 rounded-lg">
+            <h2 class="font-bold text-lg text-yellow-400 mb-3">Final Notes & Verdict</h2>
+            <textarea name="final_notes" id="final_notes" class="w-full p-3 rounded bg-gray-900" placeholder="Final summary, price considerations, recommendations..."></textarea>
+          </section>
+        </form>
+      </div>
+
+      <!-- RIGHT: Live Summary / Preview -->
+      <aside class="hidden lg:block w-1/3">
+        <div class="bg-gray-800 p-6 rounded-2xl sticky top-6">
+          <h3 class="text-lg font-bold text-yellow-400 mb-3">Live Inspection Summary</h3>
+          <div id="summary" class="space-y-3 text-sm text-gray-300">
+            <div><strong>Customer:</strong> <span id="s_user">—</span></div>
+            <div><strong>Bike:</strong> <span id="s_bike">—</span></div>
+            <div><strong>Inspector:</strong> <span id="s_inspector">—</span></div>
+            <hr class="my-2 border-gray-700" />
+            <div><strong>Front Forks:</strong> <span id="s_front_forks">—</span></div>
+            <div><strong>Rear Shocks:</strong> <span id="s_rear_shocks">—</span></div>
+            <div><strong>Chain:</strong> <span id="s_chain_condition">—</span></div>
+            <div><strong>Sprocket:</strong> <span id="s_sprocket_wear">—</span></div>
+            <div><strong>Chain Lube:</strong> <span id="s_chain_lube">—</span></div>
+            <div><strong>Chassis:</strong> <span id="s_chassis">—</span></div>
+            <div><strong>Handlebar:</strong> <span id="s_handlebar">—</span></div>
+            <div><strong>Air Filter:</strong> <span id="s_air_filter">—</span></div>
+            <hr class="my-2 border-gray-700" />
+            <div><strong>RC:</strong> <span id="s_doc_rc">—</span></div>
+            <div><strong>Insurance:</strong> <span id="s_doc_insurance">—</span></div>
+            <div><strong>PUC:</strong> <span id="s_doc_puc">—</span></div>
+            <hr class="my-2 border-gray-700" />
+            <div><strong>Final Notes:</strong><div id="s_final_notes" class="text-gray-400 mt-1">—</div></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+<script>
+(function(){
+  // map of fields we care about (status fields)
+  const statusFields = [
+    'front_forks','rear_shocks','chain_condition','sprocket_wear',
+    'chain_lubrication','chassis_condition','handlebar_alignment','air_filter'
+  ];
+
+  // helpers
+  function setActiveButton(field, value) {
+    document.querySelectorAll('.status-btn[data-field="'+field+'"]').forEach(b=>{
+      b.dataset.active = (b.dataset.value === value ? 'true' : 'false');
+    });
+  }
+
+  function updateSummaryField(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || '—';
+  }
+
+  // wire status buttons
+  document.querySelectorAll('.status-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const field = this.dataset.field;
+      const value = this.dataset.value;
+      setActiveButton(field, value);
+      // store in dataset / hidden input alternative
+      this.closest('section').dataset[field] = value; // for retrieval
+      updateSummaryField('s_'+field, value);
+    });
+  });
+
+  // wire inputs to summary
+  const inputs = {
+    user: 's_user',
+    bike_model: 's_bike',
+    inspector: 's_inspector',
+    final_notes: 's_final_notes',
+    doc_rc: 's_doc_rc',
+    doc_insurance: 's_doc_insurance',
+    doc_puc: 's_doc_puc'
+  };
+  Object.keys(inputs).forEach(name=>{
+    const inpt = document.getElementById(name);
+    if (!inpt) return;
+    inpt.addEventListener('input', ()=> {
+      updateSummaryField(inputs[name], inpt.value);
+    });
+    // initialize if value already present
+    updateSummaryField(inputs[name], inpt.value);
+  });
+
+  // chain-specific notes update (optional)
+  ['front_forks_notes','rear_shocks_notes','chain_condition_notes'].forEach(id=>{
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', ()=> {
+      // you can show these notes somewhere if you want
+    });
+  });
+
+  // Save button (localStorage)
+  document.getElementById('saveBtn').addEventListener('click', function(){
+    const data = gatherForm();
+    localStorage.setItem('motomitra_last_inspection', JSON.stringify(data));
+    alert('Saved locally (localStorage). You can Export JSON or integrate a server endpoint.');
+  });
+
+  // Export JSON
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    const data = gatherForm();
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'inspection_'+(data.date||'')+'.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  // Print
+  document.getElementById('printBtn').addEventListener('click', function(){
+    window.print();
+  });
+
+  // gather form values
+  function gatherForm(){
+    const form = document.getElementById('inspectionForm');
+    const fd = new FormData(form);
+    // statuses by reading active buttons
+    const status = {};
+    document.querySelectorAll('.status-btn[data-field]').forEach(b=>{
+      if (b.dataset.active === 'true') {
+        status[b.dataset.field] = b.dataset.value;
+      }
+    });
+
+    // prepare object
+    const obj = {
+      user: fd.get('user') || '',
+      bike_model: fd.get('bike_model') || '',
+      date: fd.get('date') || (new Date()).toISOString().slice(0,10),
+      inspector: fd.get('inspector') || '',
+      statuses: status,
+      notes: {
+        front_forks: fd.get('front_forks_notes') || '',
+        rear_shocks: fd.get('rear_shocks_notes') || '',
+        chain_condition: fd.get('chain_condition_notes') || '',
+        final: fd.get('final_notes') || ''
+      },
+      documents: {
+        rc: fd.get('doc_rc') || '',
+        insurance: fd.get('doc_insurance') || '',
+        puc: fd.get('doc_puc') || ''
+      }
+    };
+
+    return obj;
+  }
+
+  // initialize — set default active based on existing HTML (none)
+  // Optionally load last saved
+  try {
+    const last = JSON.parse(localStorage.getItem('motomitra_last_inspection') || 'null');
+    if (last) {
+      // fill fields
+      document.getElementById('user').value = last.user || '';
+      document.getElementById('bike_model').value = last.bike_model || '';
+      document.getElementById('date').value = last.date || '';
+      document.getElementById('inspector').value = last.inspector || '';
+      document.getElementById('final_notes').value = last.notes && last.notes.final || '';
+      // documents
+      if (last.documents) {
+        document.getElementById('doc_rc').value = last.documents.rc || '';
+        document.getElementById('doc_insurance').value = last.documents.insurance || '';
+        document.getElementById('doc_puc').value = last.documents.puc || '';
+      }
+      // statuses
+      if (last.statuses) {
+        Object.keys(last.statuses).forEach(k=>{
+          setActiveButton(k, last.statuses[k]);
+          updateSummaryField('s_'+k, last.statuses[k]);
+        });
+      }
+      // notes
+      if (last.notes) {
+        document.getElementById('front_forks_notes').value = last.notes.front_forks || '';
+        document.getElementById('rear_shocks_notes').value = last.notes.rear_shocks || '';
+        document.getElementById('chain_condition_notes').value = last.notes.chain_condition || '';
+      }
+      // summary fields
+      ['user','bike_model','inspector','final_notes','doc_rc','doc_insurance','doc_puc'].forEach(k=>{
+        const el = document.getElementById(k);
+        if (el) updateSummaryField('s_'+k, el.value);
+      });
+    }
+  } catch(e){ console.warn(e); }
+
+  // OPTIONAL: Submit to server (uncomment & adapt)
+  // function submitToServer(data) {
+  //   fetch('/Admin/api/save_inspection.php', {
+  //     method: 'POST',
+  //     headers: {'Content-Type':'application/json'},
+  //     body: JSON.stringify(data)
+  //   }).then(r=>r.json()).then(resp=>{
+  //     console.log('server saved', resp);
+  //     if (resp.success) alert('Saved to server.');
+  //   }).catch(err=>{
+  //     console.error(err);
+  //     alert('Server error.');
+  //   });
+  // }
+
+})();
+</script>
+
+</body>
+</html>
